@@ -1,6 +1,6 @@
 This repository contains code that reproduces the main analyses of the following study:
 
->Dimitrios - Georgios Kontopoulos, Ilias Patmanidis, Timothy G. Barraclough, and Samraat Pawar: **Higher temperatures worsen the effects of mutations on protein stability**. 2020. [Submitted]
+>Dimitrios - Georgios Kontopoulos, Ilias Patmanidis, Timothy G. Barraclough, and Samraat Pawar: **Higher temperatures amplify the negative effects of mutations on protein stability**. 2020. [Submitted]
 
 <br>
 

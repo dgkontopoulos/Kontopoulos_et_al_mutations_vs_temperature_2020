@@ -9,8 +9,8 @@
 # parameters are sufficiently sampled.
 #
 # The quality of the fitted models is evaluated according to the 
-# Deviance Information Criterion (DIC). Marginal and conditional 
-# R-squared values are also calculated.
+# Deviance Information Criterion (DIC). The R-squared value is also 
+# calculated.
 
 library(MCMCglmm)
 
@@ -25,25 +25,17 @@ calc_varF <- function(model)
 	return(var(as.vector(apply(model$Sol,2,mean) %*% t(model$X))))
 }
 
-# This function calculates the marginal and conditional R-squared values 
-# following Nakagawa & Schielzeth, Methods Ecol. Evol., 2013.
+# This function calculates the R-squared value.
 calc_r_squared <- function(model, varF)
 {
-	
-	# Get the variance explained by random effects.
-	varRandom <- mean(model$VCV[,'Species'])
-	
+
 	# Get the residual (unexplained) variance.
 	varResid <- mean(model$VCV[,'units'])
 	
-	# Calculate the marginal and conditional R-squared values. 
-	#
-	# Marginal R-squared: fraction of variance explained by fixed effects only.
-	# Conditional R-squared: fraction of variance explained by fixed and random effects.
-	r_sq_marginal <- varF/(varF + varRandom + varResid)
-	r_sq_conditional <- (varF + varRandom)/(varF + varRandom + varResid)
+	# Calculate the R-squared value.
+	r_sq <- varF/(varF + varResid)
 	
-	return(list(marginal = r_sq_marginal, conditional = r_sq_conditional))
+	return(r_sq)
 }
 
 # This function checks if the two MCMCglmm chains converged on statistically 
@@ -155,6 +147,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(2)
@@ -166,6 +159,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_1a, fit_1b)
@@ -178,6 +172,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(4)
@@ -187,6 +182,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_2a, fit_2b)
@@ -201,6 +197,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(6)
@@ -212,6 +209,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_3a, fit_3b)
@@ -224,6 +222,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(8)
@@ -233,6 +232,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_4a, fit_4b)
@@ -247,6 +247,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(10)
@@ -258,6 +259,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_5a, fit_5b)
@@ -270,6 +272,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(12)
@@ -279,6 +282,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_6a, fit_6b)
@@ -293,6 +297,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(14)
@@ -304,6 +309,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_7a, fit_7b)
@@ -316,6 +322,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(16)
@@ -325,6 +332,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_8a, fit_8b)
@@ -339,6 +347,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(18)
@@ -350,6 +359,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_9a, fit_9b)
@@ -362,6 +372,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(20)
@@ -371,6 +382,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_10a, fit_10b)
@@ -385,6 +397,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(22)
@@ -396,6 +409,7 @@ for ( i in 1:20 )
 		burnin = 100000,
 		thin = 1000,
 		ginverse=list(Species=inverseA(temp_tree, nodes = 'ALL', scale = TRUE)$Ainv),
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_11a, fit_11b)
@@ -408,6 +422,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	set.seed(24)
@@ -417,6 +432,7 @@ for ( i in 1:20 )
 		nitt = 1000000,
 		burnin = 100000,
 		thin = 1000,
+		mev = temp_dat$ln_K_t_gen_SEV,
 		verbose = TRUE
 	)
 	check_convergence(fit_12a, fit_12b)
@@ -508,17 +524,16 @@ for ( i in 1:20 )
 	)
 }
 
-# The best-fitting model is the #11, i.e., with a fixed effect of 
-# temperature as a second-order polynomial and with a phylogenetic 
-# random effect on the intercept.
+# The best-fitting model is the #4, i.e., with a fixed effect of 
+# the natural logarithm of temperature.
 
-# Merge the estimates of the two chains belonging to the 11th model.
+# Merge the estimates of the two chains belonging to the 4th model.
 joined_best_fit <- list(
-	Sol = rbind(fit_11a$Sol, fit_11b$Sol),
-	VCV = rbind(fit_11a$VCV, fit_11b$VCV)
+	Sol = rbind(fit_4a$Sol, fit_4b$Sol),
+	VCV = rbind(fit_4a$VCV, fit_4b$VCV)
 )
 
-# Calculate the marginal and conditional R-squared values.
-r_squared_vals <- calc_r_squared(
-	joined_best_fit, mean(c(calc_varF(fit_11a), calc_varF(fit_11b)))
+# Calculate the R-squared value.
+r_squared_val <- calc_r_squared(
+	joined_best_fit, mean(c(calc_varF(fit_4a), calc_varF(fit_4b)))
 )
